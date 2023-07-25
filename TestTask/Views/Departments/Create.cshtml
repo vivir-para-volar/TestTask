@@ -1,0 +1,46 @@
+﻿@model TestTask.Models.Department
+
+
+<h3>Добавление отдела</h3>
+<hr />
+
+<div class="mt-4">
+    @using (Html.BeginForm(nameof(DepartmentsController.Create), "Departments", FormMethod.Post))
+    {
+        @Html.HiddenFor(model => model.ParentDepartmentID)
+        @if (Model.ParentDepartment != null)
+        {
+            @Html.HiddenFor(model => model.ParentDepartment.ID)
+            @Html.HiddenFor(model => model.ParentDepartment.Code)
+            @Html.HiddenFor(model => model.ParentDepartment.Name)
+
+            <div class="mb-4 row">
+                <div class="col-sm-3">@Html.DisplayNameFor(model => model.ParentDepartment)</div>
+                <div class="col-sm-9">@Model.ParentDepartment.Name (@Model.ParentDepartment.Code)</div>
+            </div>
+        }
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.Code, new { @class = "control-label" })
+            <div>
+                @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control" }})
+                @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.Name, new { @class = "control-label" })
+            <div>
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @required="required" }})
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="mt-4">
+            <input type="submit" value="Добавить" class="btn btn-outline-success" />
+            @Html.ActionLink("К отделу", nameof(DepartmentsController.Details), "Departments", new { id = Model.ParentDepartmentID }, new { @class = "btn btn-outline-secondary ms-2" })
+        </div>
+    }
+</div>

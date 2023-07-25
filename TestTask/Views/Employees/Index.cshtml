@@ -1,0 +1,47 @@
+﻿@model IEnumerable<TestTask.Models.Employee>
+
+<div>
+    <h2>Сотрудники</h2>
+    <hr />
+
+    <table id="tableId" class="table mt-4">
+        <thead class="thead-light">
+            <tr>
+                <th>#</th>
+                <th>@Html.DisplayNameFor(model => model.SurName)</th>
+                <th>@Html.DisplayNameFor(model => model.FirstName)</th>
+                <th>@Html.DisplayNameFor(model => model.Patronymic)</th>
+                <th>@Html.DisplayNameFor(model => model.Position)</th>
+                <th>@Html.DisplayNameFor(model => model.Department)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int i = 1;
+            }
+            @foreach (var employee in Model)
+            {
+                <tr>
+                    <th>@(i)</th>
+                    <td>@Html.DisplayFor(model => employee.SurName)</td>
+                    <td>@Html.DisplayFor(model => employee.FirstName)</td>
+                    <td>@Html.DisplayFor(model => employee.Patronymic)</td>
+                    <td>@Html.DisplayFor(model => employee.Position)</td>
+                    <td>@Html.DisplayFor(model => employee.Department.Name)</td>
+                    <td>
+                        @Html.ActionLink("Подробнее", nameof(EmployeesController.Details), new { id = employee.ID }, new { @class = "btn btn-outline-dark" })
+                    </td>
+                </tr>
+
+                i++;
+            }
+        </tbody>
+    </table>
+</div>
+
+<script src="~/lib/tablesort.min.js" asp-append-version="true"></script>
+<script src="~/lib/tablesort.number.js" asp-append-version="true"></script>
+<script>
+    new Tablesort(document.getElementById('tableId'));
+</script>

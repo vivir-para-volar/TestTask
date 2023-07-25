@@ -1,0 +1,84 @@
+﻿@model TestTask.Models.Department
+
+
+<h3>Отдел</h3>
+<hr />
+
+<div class="mt-4">
+    @Html.ActionLink("Добавить подотдел", nameof(DepartmentsController.Create), new { parentId = Model.ID }, new { @class = "btn btn-outline-success" })
+    @Html.ActionLink("Добавить сотрудника", nameof(EmployeesController.Create), "Employees", new { departmentId = Model.ID }, new { @class = "btn btn-outline-success ms-2" })
+    @Html.ActionLink("Изменить", nameof(DepartmentsController.Update), new { id = Model.ID }, new { @class = "btn btn-outline-dark ms-2" })
+    @Html.ActionLink("Удалить", nameof(DepartmentsController.Delete), new { id = Model.ID }, new { @class = "btn btn-outline-danger ms-2" })
+    @Html.ActionLink("К списку", nameof(DepartmentsController.Index), null, htmlAttributes: new { @class = "btn btn-outline-secondary ms-2" })
+</div>
+
+<dl class="mt-5 row">
+    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Code)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.Code)</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Name)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.Name)</dd>
+</dl>
+
+
+@if (Model.ParentDepartmentID != null)
+{
+    <h4 class="mt-5">Головной отдел</h4>
+    @Html.ActionLink($"{Model.ParentDepartment?.Name} ({Model.ParentDepartment?.Code})", nameof(DepartmentsController.Details), new { id = Model.ParentDepartmentID })
+}
+
+@if (Model.ChildDepartments.Count != 0)
+{
+    <h4 class="mt-5">Подотделы</h4>
+
+    <ol>
+        @foreach (var department in Model.ChildDepartments)
+        {
+            <li> @Html.ActionLink($"{department.Name} ({department.Code})", nameof(DepartmentsController.Details), new { id = department.ID })</li>
+        }
+    </ol>
+}
+
+@if (Model.Employees.Count != 0)
+{
+    <h4 class="mt-5">Сотрудники</h4>
+
+    <table id="tableId" class="table mt-4">
+        <thead class="thead-light">
+            <tr>
+                <th>#</th>
+                <th>@Html.DisplayNameFor(model => model.Employees.First().SurName)</th>
+                <th>@Html.DisplayNameFor(model => model.Employees.First().FirstName)</th>
+                <th>@Html.DisplayNameFor(model => model.Employees.First().Patronymic)</th>
+                <th>@Html.DisplayNameFor(model => model.Employees.First().Position)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int i = 1;
+            }
+            @foreach (var employee in Model.Employees)
+            {
+                <tr>
+                    <th>@(i)</th>
+                    <td>@Html.DisplayFor(model => employee.SurName)</td>
+                    <td>@Html.DisplayFor(model => employee.FirstName)</td>
+                    <td>@Html.DisplayFor(model => employee.Patronymic)</td>
+                    <td>@Html.DisplayFor(model => employee.Position)</td>
+                    <td>
+                        @Html.ActionLink("Подробнее", nameof(EmployeesController.Details), "Employees", new { id = employee.ID }, new { @class = "btn btn-outline-dark" })
+                    </td>
+                </tr>
+
+                i++;
+            }
+        </tbody>
+    </table>
+
+    <script src="~/lib/tablesort.min.js" asp-append-version="true"></script>
+    <script src="~/lib/tablesort.number.js" asp-append-version="true"></script>
+    <script>
+        new Tablesort(document.getElementById('tableId'));
+    </script>
+}

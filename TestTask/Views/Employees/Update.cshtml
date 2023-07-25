@@ -1,0 +1,131 @@
+﻿@model TestTask.Models.Employee
+@{
+    void showDepartment(Department department)
+    {
+        if (department.ChildDepartments.Count != 0)
+        {
+            <div class="accordion mt-2 mb-2">
+
+                <div class="accordion-item">
+
+                    <div class="containerHeaderAccordion">
+                        <h2 class="accordion-header containerHeaderAccordionBlock1" id="heading@(department.ID)">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapse@(department.ID)" aria-expanded="false"
+                                    aria-controls="collapse@(department.ID)">
+                                @(department.Name) (@department.Code)
+                            </button>
+                        </h2>
+
+                        <div class="bg-secondary bg-gradient rounded containerHeaderAccordionBlock2 p-1 me-2">
+                            @Html.RadioButtonFor(model => model.DepartmentID, department.ID, new { @class = "form-check-input" })
+                        </div>
+                    </div>
+
+                    <div id="collapse@(department.ID)" class="accordion-collapse collapse" aria-labelledby="heading@(department.ID)">
+                        <div class="accordion-body">
+                            @foreach (var childDepartment in department.ChildDepartments)
+                            {
+                                showDepartment(childDepartment);
+                            }
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        }
+        else
+        {
+            <div class="containerHeaderAccordion border rounded mt-2 mb-2">
+                <div class="containerHeaderAccordionBlock1 p-3">
+                    @(department.Name) (@department.Code)
+                </div>
+
+                <div class="bg-secondary bg-gradient rounded containerHeaderAccordionBlock2 p-1 me-2">
+                    @Html.RadioButtonFor(model => model.DepartmentID, department.ID, new { @class = "form-check-input" })
+                </div>
+            </div>
+        }
+    }
+}
+
+<h3>Изменение сотрудника</h3>
+<hr />
+
+<div class="mt-4">
+    @using (Html.BeginForm(nameof(EmployeesController.Update), "Employees", FormMethod.Post))
+    {
+        <div class="mb-3">
+            @Html.LabelFor(model => model.SurName, new { @class = "form-label" })
+            <div>
+                @Html.EditorFor(model => model.SurName, new { htmlAttributes = new { @class = "form-control", @required="required" } })
+                @Html.ValidationMessageFor(model => model.SurName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.FirstName, new { @class = "form-label" })
+            <div>
+                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new  { @class = "form-control", @required="required" }})
+                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.Patronymic, new { @class = "form-label" })
+            <div>
+                @Html.EditorFor(model => model.Patronymic, new { htmlAttributes = new  { @class = "form-control" }})
+                @Html.ValidationMessageFor(model => model.Patronymic, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.DateOfBirth, new { @class = "form-label" })
+            <div>
+                @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control" }})
+                @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.DocSeries, new { @class = "form-label" })
+            <div>
+                @Html.EditorFor(model => model.DocSeries, new { htmlAttributes = new { @class = "form-control" }})
+                @Html.ValidationMessageFor(model => model.DocSeries, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.DocNumber, new { @class = "control-label" })
+            <div>
+                @Html.EditorFor(model => model.DocNumber, new { htmlAttributes = new { @class = "form-control" }})
+                @Html.ValidationMessageFor(model => model.DocNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.Position, new { @class = "control-label" })
+            <div>
+                @Html.EditorFor(model => model.Position, new { htmlAttributes = new { @class = "form-control", @required="required" }})
+                @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.Department, new { @class = "control-label" })
+            <div>
+                @foreach (var department in ViewBag.Departments)
+                {
+                    showDepartment(department);
+                }
+            </div>
+        </div>
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="mt-4">
+            <input type="submit" value="Изменить" class="btn btn-outline-success" />
+            @Html.ActionLink("К отделу", nameof(DepartmentsController.Details), "Departments", new { id = Model.DepartmentID }, new { @class = "btn btn-outline-secondary ms-2" })
+        </div>
+    }
+</div>

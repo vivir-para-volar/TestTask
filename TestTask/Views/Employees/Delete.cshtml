@@ -1,0 +1,48 @@
+﻿@model TestTask.Models.Employee
+
+
+<h3>Удаление сотрудника</h3>
+<hr />
+
+<dl class="mt-4 row">
+    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Department)</dt>
+    <dd class="col-sm-9">@Model.Department?.Name (Model.Department?.Code)</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.SurName)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.SurName)</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.FirstName)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.FirstName)</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Patronymic)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.Patronymic)</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.DateOfBirth)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.DateOfBirth)</dd>
+
+    <dt class="col-sm-3">Возраст</dt>
+    <dd class="col-sm-9">@Model.CalculateAge()</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.DocSeries)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.DocSeries)</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.DocNumber)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.DocNumber)</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Position)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.Position)</dd>
+</dl>
+
+
+<div class="mt-4">
+    @using (Html.BeginForm(nameof(EmployeesController.Delete), "Employees", FormMethod.Post))
+    {
+        @Html.HiddenFor(model => model.ID)
+
+        <div>
+            <input type="submit" value="Удалить" class="btn btn-outline-danger" />
+            @Html.ActionLink("К сотруднику", nameof(EmployeesController.Details), new { id = Model.ID }, new { @class = "btn btn-outline-secondary ms-2" })
+        </div>
+    }
+</div>
+

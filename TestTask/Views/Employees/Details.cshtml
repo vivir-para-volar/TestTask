@@ -1,0 +1,44 @@
+﻿@model TestTask.Models.Employee
+
+
+<h3>Сотрудник</h3>
+<hr />
+
+<div class="mt-4">
+    @Html.ActionLink("Изменить", nameof(EmployeesController.Update), new { id = Model.ID }, new { @class = "btn btn-outline-dark" })
+    @Html.ActionLink("Удалить", nameof(EmployeesController.Delete), new { id = Model.ID }, new { @class = "btn btn-outline-danger ms-2" })
+    @Html.ActionLink("К списку", nameof(EmployeesController.Index), null, htmlAttributes: new { @class = "btn btn-outline-secondary ms-2" })
+</div>
+
+
+<dl class="mt-5 row">
+    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.SurName)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.SurName)</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.FirstName)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.FirstName)</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Patronymic)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.Patronymic)</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.DateOfBirth)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.DateOfBirth)</dd>
+
+    <dt class="col-sm-3">Возраст</dt>
+    <dd class="col-sm-9">@Model.CalculateAge()</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.DocSeries)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.DocSeries)</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.DocNumber)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.DocNumber)</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Position)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.Position)</dd>
+</dl>
+
+
+<div class="mt-5">
+    <h4 >Отдел</h4>
+    @Html.ActionLink($"{Model.Department?.Name} ({Model.Department?.Code})", nameof(DepartmentsController.Details), "Departments", new { id = Model.DepartmentID })
+</div>

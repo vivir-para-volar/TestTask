@@ -1,0 +1,33 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+
+.containerHeaderAccordion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.containerHeaderAccordionBlock1 {
+    flex-grow: 1;
+}
+
+.containerHeaderAccordionBlock2 {
+    flex-shrink: 0;
+}
