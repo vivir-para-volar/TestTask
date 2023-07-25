@@ -5,7 +5,7 @@ namespace TestTask.Services
 {
     public class EmployeesService
     {
-        private readonly string ConnectionString = @"Server=localhost;Database=TestDB;Trusted_Connection=true;Integrated Security=true";
+        private readonly string ConnectionString;
 
         public EmployeesService(string connString)
         {
